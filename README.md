@@ -1,2 +1,2 @@
 # GRIND
-Varro-Scale point cloud integration
+Vario-Scale point cloud integration
