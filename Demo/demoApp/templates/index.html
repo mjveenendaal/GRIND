@@ -76,11 +76,22 @@
           position: absolute;
           background-color: white;
           top: 175px;
-          left:35%;
+          left: 40%;
           width: 280px;
           height: 400px;
           text-align: center;
           opacity: 0;
+      }
+      .w3-button {
+          background-color:white;
+          padding: 16px;
+          text-align: center;
+          opacity: 0.7;
+      }
+      div.buttoncontainer {
+          position:absolute;
+          left: 39%;
+          bottom: 5%;
       }
   </style>
 </head>
@@ -98,6 +109,9 @@
             <h3 align="center" style="color:#5c5c3d">Download</h3>
             <hr style="color:#5c5c3d">
             <i class="fa fa-cloud-download" style="color:#5c5c3d; font-size:70px"></i>
+        </div>
+        <div class="buttoncontainer">
+            <p><a href="http://localhost:8000/demo/" class="w3-button" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"">Back to main page</a></p>
         </div>
         <div class="definecard3" id="upload_block">
             <form method="post" enctype="multipart/form-data" id="upload_form">
@@ -135,7 +149,6 @@
             });
         });
     </script>
-
     {% if message %}
         <script>
             alert('{{message}}');

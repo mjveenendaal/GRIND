@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'Demo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sketch_grind',
+        'NAME': #your database,
         'USER': 'postgres',
-        'PASSWORD': '950206',
+        'PASSWORD': #your password,
         'HOST': 'localhost',
         'PORT': '5432',
     }

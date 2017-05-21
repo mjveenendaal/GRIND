@@ -16,6 +16,7 @@ from django.shortcuts import render
 from django.contrib import messages# import get_messages
 from django.conf import settings
 import os
+import time
 
 def saveUpload(request):
     ctx = {}
