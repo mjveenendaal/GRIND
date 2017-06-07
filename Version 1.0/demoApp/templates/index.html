@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>GRIND Start Page</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1404.47">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+      h1 {
+          font-size:90px;
+          font-family:"Book Antiqua";
+      }
+      h2 {
+          font-size:60px;
+          font-family:"Book Antiqua";
+      }
+      h3 {
+          font-size:40px;
+          font-family:"Book Antiqua";
+      }
+      body, html {
+          height: 100%;
+          line-height: 1.8;
+      }
+      .bgimg {
+          background-position: center;
+          background-size: cover;
+          min-height: 100%;
+          background-image: url("http://localhost:8000/demo/media/molen.jpg")
+      }
+      div.selfdefine {
+          position: relative;
+          left: 10px;
+          top: 10px;
+      }
+      div.definecard1 {
+          border-radius: 25px;
+          position: absolute;
+          top: 155px;
+          left: 20%;
+          background-color: white;
+          width: 260px;
+          height: 380px;
+          line-height: 170px;
+          text-align: center;
+          opacity: 0.7;
+      }
+      div:hover.definecard1 {
+          opacity: 0.5;
+      }
+
+      div.definecard2 {
+          border-radius: 25px;
+          position: absolute;
+          top: 155px;
+          right: 20%;
+          background-color: white;
+          width: 260px;
+          height: 380px;
+          line-height: 170px;
+          text-align: center;
+          opacity: 0.7;
+      }
+      div:hover.definecard2 {
+          opacity: 0.5;
+      }
+      div.definecard3 {
+          border-radius: 25px;
+          position: absolute;
+          background-color: white;
+          top: 155px;
+          left: 40%;
+          width: 260px;
+          height: 380px;
+          text-align: center;
+          opacity: 0.7;
+      }
+      .w3-button {
+          background-color:white;
+          padding: 16px;
+          text-align: center;
+          opacity: 0.7;
+      }
+      div.buttoncontainer {
+          position:absolute;
+          left: 39%;
+          bottom: 0;
+      }
+      div.transfertrigger {
+          position:absolute;
+          left: 42%;
+          bottom: 12%;
+      }
+  </style>
+</head>
+<body>
+    <header class="bgimg" id="navi">
+        <div id="logoBar" class="selfdefine">
+            <img src="http://localhost:8000/demo/media/GrInD_logo_def.png" alt="GrInD" height=60 width=170>
+        </div>
+        <div class="definecard1" id="upload_card">
+            <h3 align="center" style="color:#5c5c3d">Upload</h3>
+            <hr style="color:#5c5c3d">
+            <i class="fa fa-cloud-upload" style="color:#5c5c3d; font-size:70px"></i>
+        </div>
+        <div class="definecard2" id="download_card">
+            <h3 align="center" style="color:#5c5c3d">Download</h3>
+            <hr style="color:#5c5c3d">
+            <i class="fa fa-cloud-download" style="color:#5c5c3d; font-size:70px"></i>
+        </div>
+        <div class="transfertrigger" id="start_transfer">
+            <form method="post" id="transfer">
+                {% csrf_token %}
+                <p><input type="submit" name="_transfer" value="Start transfer" class="w3-button" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"" /></p>
+            </form>
+        </div>
+        <div class="buttoncontainer">
+            <p><a href="http://localhost:8000/demo/" class="w3-button" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"">Back to main page</a></p>
+        </div>
+        <div class="definecard3" id="upload_block">
+            <form method="post" enctype="multipart/form-data" id="upload_form">
+                {% csrf_token %}
+                <p class="w3-center" style="font-size:30px; font-family:Georgia; color:#5c5c3d">Please upload file: <br><br></p>
+                <p><input type="file" name="pc" /><br><br><br></p>
+                <p><input type="submit" name="_upload" value="Upload" /></p>
+                <p><input type="button" value="Return" id="return" /></p>
+            </form>
+        </div>
+    </header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#upload_block").hide();
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#upload_card").click(function(){
+                $("#download_card").hide();
+                $("#upload_card").hide();
+                $("#start_transfer").hide();
+                $("#upload_block").show();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#return").click(function(){
+                $("#upload_block").hide();
+                $("#start_transfer").show();
+                $("#upload_card").show();
+                $("#download_card").show();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#download_card").click(function(){
+                window.location.href="http://localhost:8000/demo/download-pc";
+            });
+        });
+    </script>
+    {% if nothing %}
+        <script>
+            alert('{{nothing}}');
+        </script>
+    {% endif %}
+    
+</body>
+</html>
