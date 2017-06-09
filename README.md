@@ -2,6 +2,19 @@
 
 Vario-Scale point cloud integration
 
+## Team
+
+Weiran Li
+Brenda Olsen
+Jippe van der Maaden
+Marc-Julien Veenendaal
+Tom Hemmes
+
+## Support
+
+TU Delft
+Fugro Geoservices
+
 ## Credits
 
 Django
