@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-#
 #The second part is intended for getting data for the viewer.
 #Due to the performance of jQuery (json file cannot be used outside the $getJSON function;
 #while the graph cannot be drawn inside the function either), the coordinates and importances
@@ -9,7 +8,7 @@
 #
 #However, querying plus writing the file is rather slow, so I just provided a sample data,
 #and left out this function.
-# 
+
 
 import laspy
 from models import Point_Cloud
@@ -175,7 +174,7 @@ def toDownload(request):
 #                string = string + str(points)
 #                outfile.write(string)
 #                outfile.close()
-#                ctx['done'] = 'File ' + f_name + ' is downloaded!'
+#                ctx['done'] = 'File is downloaded!'
     else:
         ctx['done'] = 'No point cloud available!'
         return render(request, 'upload.html', ctx)

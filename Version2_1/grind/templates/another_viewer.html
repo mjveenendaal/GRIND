@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GRIND Viewer with three.js</title>
+
+        <script src="http://localhost:8000/grind/media/lib/threeGeoJSON.js"></script>
+
+       <!-- Three.js library, movement controls, and jquery for the geojson-->
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://localhost:8000/grind/media/lib/three.min.js"></script>
+        <script src="http://localhost:8000/grind/media/lib/TrackballControls.js"></script>
+        <script src="http://localhost:8000/grind/media/lib/three.js"></script>
+        <script src="http://localhost:8000/grind/media/lib/js/Detector.js"></script>
+        <script src="http://localhost:8000/grind/media/lib/js/libs/stats.min.js"></script>
+        <script src="http://localhost:8000/grind/media/visualisation_700k.js"></script>
+        
+        <style>
+            .w3-button {
+                background-color:white;
+                padding: 16px;
+                text-align: center;
+                opacity: 0.7;
+            }
+            div.selfdefine {
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+        <div class="selfdefine">
+            <a href="http://localhost:8000/grind/upload-pc" class="w3-button w3-left" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"">Return</a><a href="http://localhost:8000/grind/viewer-pc" class="w3-button w3-right" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"">Switch data</a>
+        </div>
+		<script type="text/JavaScript">
+            if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+            
+            //var container, stats;
+            
+            var camera, scene, renderer;
+            
+            var points;
+                    
+            //New scene and camera
+            var scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera( 27, window.innerWidth / window.innerHeight, 50, 3500 );
+            camera.position.z = 1700;
+            
+            //New Renderer
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+                    
+            var particles = another_visualisation.length/4;
+                    
+            var geometry = new THREE.BufferGeometry();
+            var positions = new Float32Array( particles * 3 );
+            var colors = new Float32Array( particles * 3 );
+                    
+            var color = new THREE.Color();
+
+            var j = 0;
+            var shiftBack = [-85168.41, -446709.42, 1.0]
+                    
+            for ( var i = 0; i < positions.length; i += 3 ) {
+                positions[i] = another_visualisation[j]+shiftBack[0];
+                positions[i+1] = another_visualisation[j+1]+shiftBack[1];
+                positions[i+2] = another_visualisation[j+2]+shiftBack[2];
+            
+            if (another_visualisation[j+3]<0.5) {
+                color.setRGB( another_visualisation[j+3]+0.15, 0.15, 0.15 );
+            }
+            else if (another_visualisation[j+3]<0.7){
+                color.setRGB( another_visualisation[j+3]+0.15, another_visualisation[j+3]+0.15, 0.15 );
+            }
+            else if (another_visualisation[j+3]<0.85){
+                color.setRGB( 0.15, another_visualisation[j+3]+0.15, 0.15 );
+            }
+            else if (another_visualisation[j+3]<1){
+                color.setRGB( 0.15, 0.15, another_visualisation[j+3]+0.15 );
+            }
+            else {
+                color.setRGB( 0.15, 0.15, 1 );
+            }
+                colors[ i ]     = color.r;
+                colors[ i + 1 ] = color.g;
+                colors[ i + 2 ] = color.b;
+                j = j + 4;
+                
+            }
+        
+            geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+            geometry.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+            
+            geometry.computeBoundingSphere();
+                    
+            var material = new THREE.PointsMaterial( { size: 1.5, vertexColors: THREE.VertexColors } );
+                    
+            points = new THREE.Points( geometry, material );
+            scene.add( points );
+                    
+            window.addEventListener( 'resize', onWindowResize, false );
+            var controls = new THREE.TrackballControls(camera);
+            render();
+            
+            
+            function createGeometryArray(json) {
+                var geometry_array = [];
+                
+                if (json.type == 'Feature') {
+                    geometry_array.push(json.geometry);
+                } else if (json.type == 'FeatureCollection') {
+                    for (var feature_num = 0; feature_num < json.features.length; feature_num++) {
+                        geometry_array.push(json.features[feature_num].geometry);
+                    }
+                } else if (json.type == 'GeometryCollection') {
+                    for (var geom_num = 0; geom_num < json.geometries.length; geom_num++) {
+                        geometry_array.push(json.geometries[geom_num]);
+                    }
+                } else {
+                    throw new Error('The geoJSON is not valid.');
+                }
+                return geometry_array;
+            }
+        
+            function onWindowResize() {
+            
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            
+                renderer.setSize( window.innerWidth, window.innerHeight );
+            
+            }
+        
+            function render() {
+                controls.update();
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+            }
+
+        </script>
+	</body>
+</html>

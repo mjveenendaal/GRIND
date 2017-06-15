@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^upload-pc$', uploadModule.toUpload, name = 'upload_pc'),
     url(r'^download-pc$', downloadModule.toDownload, name = 'download_pc'),
     url(r'^viewer-pc$', views.viewer, name='viewer_pc'),
+    url(r'^another-viewer-pc$', views.another_viewer, name='another_viewer_pc'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
