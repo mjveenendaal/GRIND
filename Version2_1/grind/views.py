@@ -8,5 +8,5 @@ from django.views.generic import TemplateView
 def index(request):
     return render(request, 'index.html')
 
-class ViewerPageView(TemplateView):
-    template_name = "viewer.html"
+def viewer(request):
+    return render(request, 'viewer.html')

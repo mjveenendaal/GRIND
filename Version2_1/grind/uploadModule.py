@@ -64,13 +64,14 @@ def toUpload(request):
 #                                            xypoint=GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*0.01)
 #                                            +' '+str(f[i].Y*0.01)+')'))
 #                            p.save()
-                            point_list = [i+id_start, f[i].X, f[i].Y, f[i].Z, importances[i], GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*coefficient)
-                                            +' '+str(f[i].Y*coefficient)+')')]		
+                            point_list = [i+id_start, f[i].X*coefficient, f[i].Y*coefficient, f[i].Z*coefficient, importances[i], GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*coefficient)
+                                            +' '+str(f[i].Y*coefficient)+')')]#, GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*coefficient)
+#                                            +' '+str(f[i].Y*coefficient)+' '+str(f[i].Z*coefficient)+')')]		
                             data.append(point_list)
                             if i % 100000 == 0 and i > 0:
                                 w.writerows(data)
                                 stringPoints.seek(0)
-                                cur.copy_from(stringPoints, "grind_point_cloud", sep=',', columns=('id', 'x', 'y', 'z', 'imp', 'xypoint')) 
+                                cur.copy_from(stringPoints, "grind_point_cloud", sep=',', columns=('id', 'x', 'y', 'z', 'imp', 'xypoint'))#, 'xyzpoint')) 
                                 stringPoints.close()
                                 stringPoints = StringIO()
                                 w = csv.writer(stringPoints) 
@@ -88,15 +89,16 @@ def toUpload(request):
 
                     for i in range(j*100000+1, len(f)):
                         coefficient = 10**(5-len(str(f[i].X)))
-                        point_list = [i+id_start, f[i].X, f[i].Y, f[i].Z, importances[i], GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*coefficient)
-                                            +' '+str(f[i].Y*coefficient)+')')]
+                        point_list = [i+id_start, f[i].X*coefficient, f[i].Y*coefficient, f[i].Z*coefficient, importances[i], GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*coefficient)
+                                            +' '+str(f[i].Y*coefficient)+')')]#, GEOSGeometry('SRID=28992;POINT ('+str(f[i].X*coefficient)
+#                                            +' '+str(f[i].Y*coefficient)+' '+str(f[i].Z*coefficient)+')')]
 		
                         data.append(point_list)
     
                         w.writerows(data)
 
                         stringPoints.seek(0)
-                        cur.copy_from(stringPoints, "grind_point_cloud", sep=',', columns=('id', 'x', 'y', 'z', 'imp', 'xypoint')) 
+                        cur.copy_from(stringPoints, "grind_point_cloud", sep=',', columns=('id', 'x', 'y', 'z', 'imp', 'xypoint'))#, 'xyzpoint')) 
 
                         stringPoints.close()
                         stringPoints = StringIO()

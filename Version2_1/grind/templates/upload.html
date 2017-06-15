@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <title>GRIND Start Page</title>
+  <title>GRIND Functions</title>
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="1404.47">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -39,8 +39,8 @@
       div.definecard1 {
           border-radius: 25px;
           position: absolute;
-          top: 155px;
-          left: 20%;
+          top: 150px;
+          left: 5%;
           background-color: white;
           width: 260px;
           height: 380px;
@@ -55,8 +55,8 @@
       div.definecard2 {
           border-radius: 25px;
           position: absolute;
-          top: 155px;
-          right: 20%;
+          top: 150px;
+          right: 5%;
           background-color: white;
           width: 260px;
           height: 380px;
@@ -71,7 +71,22 @@
           border-radius: 25px;
           position: absolute;
           background-color: white;
-          top: 155px;
+          top: 150px;
+          left: 40%;
+          width: 260px;
+          height: 380px;
+          line-height: 170px;
+          text-align: center;
+          opacity: 0.7;
+      }
+      div:hover.definecard3 {
+          opacity: 0.5;
+      }
+      div.definecard4 {
+          border-radius: 25px;
+          position: absolute;
+          background-color: white;
+          top: 150px;
           left: 40%;
           width: 260px;
           height: 380px;
@@ -81,17 +96,18 @@
       .w3-button {
           background-color:white;
           padding: 16px;
+          height: 55px;
           text-align: center;
           opacity: 0.7;
       }
       div.buttoncontainer {
           position:absolute;
-          left: 39%;
+          left: 43.5%;
           bottom: 0;
       }
       div.transfertrigger {
           position:absolute;
-          left: 42%;
+          left: 45%;
           bottom: 12%;
       }
   </style>
@@ -106,6 +122,11 @@
             <hr style="color:#5c5c3d">
             <i class="fa fa-cloud-upload" style="color:#5c5c3d; font-size:70px"></i>
         </div>
+        <div class="definecard3" id="viewer_card">
+            <h3 align="center" style="color:#5c5c3d; font-size:30px" name="_viewer">View sample data</h3>
+            <hr style="color:#5c5c3d">
+            <i class="fa fa-television" style="color:#5c5c3d; font-size:70px"></i>
+        </div>
         <div class="definecard2" id="download_card">
             <h3 align="center" style="color:#5c5c3d">Download</h3>
             <hr style="color:#5c5c3d">
@@ -114,13 +135,13 @@
         <div class="transfertrigger" id="start_transfer">
             <form method="post" id="transfer">
                 {% csrf_token %}
-                <p><input type="submit" name="_transfer" value="Start transfer" class="w3-button" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"" /></p>
+                <p><input type="submit" name="_transfer" value="Start transfer" class="w3-button" style="color:#5c5c3d; font-size:15px" /></p>
             </form>
         </div>
         <div class="buttoncontainer">
-            <p><a href="http://localhost:8000/grind/" class="w3-button" style="color:#5c5c3d; font-size:30px; font-family:"Book Antiqua"">Back to main page</a></p>
+            <p><a href="http://localhost:8000/grind/" class="w3-button" style="color:#5c5c3d; font-size:15px">Back to main page</a></p>
         </div>
-        <div class="definecard3" id="upload_block">
+        <div class="definecard4" id="upload_block">
             <form method="post" enctype="multipart/form-data" id="upload_form">
                 {% csrf_token %}
                 <p class="w3-center" style="font-size:30px; font-family:Georgia; color:#5c5c3d">Please upload file: <br><br></p>
@@ -141,6 +162,7 @@
             $("#upload_card").click(function(){
                 $("#download_card").hide();
                 $("#upload_card").hide();
+                $("#viewer_card").hide();
                 $("#start_transfer").hide();
                 $("#upload_block").show();
             });
@@ -152,6 +174,7 @@
                 $("#upload_block").hide();
                 $("#start_transfer").show();
                 $("#upload_card").show();
+                $("#viewer_card").show();
                 $("#download_card").show();
             });
         });
@@ -163,6 +186,13 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function(){
+            $("#viewer_card").click(function(){
+                window.location.href="http://localhost:8000/grind/viewer-pc";
+            });
+        });
+        </script>
     {% if uploaded %}
         <script>
             alert('{{uploaded}}');
