@@ -1,15 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-#The second part is intended for getting data for the viewer.
-#Due to the performance of jQuery (json file cannot be used outside the $getJSON function;
-#while the graph cannot be drawn inside the function either), the coordinates and importances
-#are written in an array and into a js. file, so that it can be used as a variable directly.
-#
-#However, querying plus writing the file is rather slow, so I just provided a sample data,
-#and left out this function.
-
-
 import laspy
 from models import Point_Cloud
 from django.http import HttpResponse#, HttpResponseForbidden
@@ -31,14 +22,10 @@ def toDownload(request):
     if pointExist:
         if request.POST:
             if '_download' in request.POST:
-                if request.POST['percentage'] and float(str(request.POST['percentage'])) < 100:
-                    percentage = float(str(request.POST['percentage'])) * 0.01
-                else:
-                    percentage = 1
                 if request.POST['x'] and request.POST['y'] and request.POST['r']:
                     x0 = float(str(request.POST['x']))
                     y0 = float(str(request.POST['y']))
-                    radius = str(request.POST['r'])
+                    radius = float(str(request.POST['r']))
                 elif request.POST['x'] and request.POST['y']:
                     x0 = float(str(request.POST['x']))
                     y0 = float(str(request.POST['y']))
@@ -67,7 +54,7 @@ def toDownload(request):
                     x0 = '85168.41'
                     y0 = '446709.42'
                     radius = 459.494
-                center = GEOSGeometry('SRID=28992;POINT (' + x0 +' '+ y0 + ')')
+                center = GEOSGeometry('SRID=28992;POINT (' + str(x0) +' '+ str(y0) + ')')
                 polygon = center.buffer(radius)
 
 #                if request.POST['density']:
@@ -96,11 +83,10 @@ def toDownload(request):
                 for p in temp1:
                     if p['xypoint'].distance(center)/radius < p['imp']:
                         temp2.append(p['id'])
-                total = int(len(temp2) * percentage)
-                allx = np.array([x for x in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('x', flat=True).order_by('imp')])[:total]
-                ally = np.array([y for y in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('y', flat=True).order_by('imp')])[:total]
-                allz = np.array([z for z in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('z', flat=True).order_by('imp')])[:total]
-                allimp = np.array([imp for imp in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('imp', flat=True).order_by('imp')])[:total]
+                allx = np.array([x for x in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('x', flat=True)])
+                ally = np.array([y for y in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('y', flat=True)])
+                allz = np.array([z for z in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('z', flat=True)])
+                allimp = np.array([imp for imp in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('imp', flat=True).order_by('imp')])
 
                 outfile.X = allx
                 outfile.Y = ally
@@ -111,70 +97,66 @@ def toDownload(request):
                 outfile.close()
                 ctx['done'] = 'File ' + f_name + ' is downloaded!'
 
-#            elif '_viewer' in request.POST:
-#                if request.POST['percentage'] and float(str(request.POST['percentage'])) < 100:
-#                    percentage = float(str(request.POST['percentage'])) * 0.01
-#                else:
-#                    percentage = 1
-#                if request.POST['x'] and request.POST['y'] and request.POST['r']:
-#                    x0 = float(str(request.POST['x']))
-#                    y0 = float(str(request.POST['y']))
-#                    radius = str(request.POST['r'])
-#                elif request.POST['x'] and request.POST['y']:
-#                    x0 = float(str(request.POST['x']))
-#                    y0 = float(str(request.POST['y']))
-#                    radius = 459.494
-#                elif request.POST['y'] and request.POST['r']:
-#                    x0 = '85168.41'
-#                    y0 = float(str(request.POST['y']))
-#                    radius = float(str(request.POST['r']))
-#                elif request.POST['x'] and request.POST['r']:
-#                    x0 = float(str(request.POST['x']))
-#                    y0 = '446709.42'
-#                    radius = float(str(request.POST['r']))
-#                elif request.POST['x']:
-#                    x0 = float(str(request.POST['x']))
-#                    y0 = '446709.42'
-#                    radius = 459.494
-#                elif request.POST['y']:
-#                    x0 = '85168.41'
-#                    y0 = float(str(request.POST['y']))
-#                    radius = 459.494
-#                elif request.POST['r']:
-#                    x0 = '85168.41'
-#                    y0 = '446709.42'
-#                    radius = float(str(request.POST['r']))
-#                else:
-#                    x0 = '85168.41'
-#                    y0 = '446709.42'
-#                    radius = 459.494
-#                center = GEOSGeometry('SRID=28992;POINT (' + x0 +' '+ y0 + ')')
-#                polygon = center.buffer(radius)
-#                
-#                temp1 = Point_Cloud.objects.values('id', 'imp', 'xypoint')
-#                temp2 = []
-#                for p in temp1:
-#                    if p['xypoint'].distance(center)/radius < p['imp']:
-#                        temp2.append(p['id'])
-#                total = int(len(temp2) * percentage)
-#                allx = np.array([x for x in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('x', flat=True).order_by('imp')])[:total]
-#                ally = np.array([y for y in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('y', flat=True).order_by('imp')])[:total]
-#                allz = np.array([z for z in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('z', flat=True).order_by('imp')])[:total]
-#                allimp = np.array([imp for imp in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('imp', flat=True).order_by('imp')])[:total]
-#                
-#                outfile = file(settings.MEDIA_ROOT + '/visualisation.js', mode='w')
-#                points = []
-#                string = 'var visualisation = '
-#                for i in range(len(allx)):
-#                    points.append(fr[i].X)
-#                    points.append(fr[i].Y)
-#                    points.append(fr[i].Z)
-#                    points.append(fr[i].imp)
+            elif '_viewer' in request.POST:
+                if request.POST['x'] and request.POST['y'] and request.POST['r']:
+                    x0 = float(str(request.POST['x']))
+                    y0 = float(str(request.POST['y']))
+                    radius = float(str(request.POST['r']))
+                elif request.POST['x'] and request.POST['y']:
+                    x0 = float(str(request.POST['x']))
+                    y0 = float(str(request.POST['y']))
+                    radius = 459.494
+                elif request.POST['y'] and request.POST['r']:
+                    x0 = '85168.41'
+                    y0 = float(str(request.POST['y']))
+                    radius = float(str(request.POST['r']))
+                elif request.POST['x'] and request.POST['r']:
+                    x0 = float(str(request.POST['x']))
+                    y0 = '446709.42'
+                    radius = float(str(request.POST['r']))
+                elif request.POST['x']:
+                    x0 = float(str(request.POST['x']))
+                    y0 = '446709.42'
+                    radius = 459.494
+                elif request.POST['y']:
+                    x0 = '85168.41'
+                    y0 = float(str(request.POST['y']))
+                    radius = 459.494
+                elif request.POST['r']:
+                    x0 = '85168.41'
+                    y0 = '446709.42'
+                    radius = float(str(request.POST['r']))
+                else:
+                    x0 = '85168.41'
+                    y0 = '446709.42'
+                    radius = 459.494
+                center = GEOSGeometry('SRID=28992;POINT (' + str(x0) +' '+ str(y0) + ')')
+                polygon = center.buffer(radius)
+                
+                temp1 = Point_Cloud.objects.values('id', 'imp', 'xypoint')
+                temp2 = []
+                for p in temp1:
+                    if p['xypoint'].distance(center)/radius < p['imp']:#**2:
+                        temp2.append(p['id'])
+                selected = Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).order_by('imp')
+                #allx = np.array([x for x in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('x', flat=True).order_by('imp')])[:total]
+                #ally = np.array([y for y in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('y', flat=True).order_by('imp')])[:total]
+                #allz = np.array([z for z in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('z', flat=True).order_by('imp')])[:total]
+                #allimp = np.array([imp for imp in Point_Cloud.objects.filter(xypoint__within = polygon, id__in = temp2).values_list('imp', flat=True).order_by('imp')])[:total]
+                
+                points = []
+                
+                for i in range(len(selected)):
+                    points.append(selected[i].x)
+                    points.append(selected[i].y)
+                    points.append(selected[i].z)
+                    points.append(selected[i].imp)
 
-#                string = string + str(points)
-#                outfile.write(string)
-#                outfile.close()
-#                ctx['done'] = 'File is downloaded!'
+                string = 'var visualisation = ' + str(points) + ';\n' + 'var centre = ' + str([x0, y0, 0.0]) + ';'
+                outfile = file(settings.MEDIA_ROOT + '/visualisation.js', mode='w')                
+                outfile.write(string)
+                outfile.close()
+                ctx['done'] = 'File is ready for the viewer!'
     else:
         ctx['done'] = 'No point cloud available!'
         return render(request, 'upload.html', ctx)

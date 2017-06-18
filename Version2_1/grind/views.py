@@ -11,5 +11,5 @@ def index(request):
 def viewer(request):
     return render(request, 'viewer.html')
 
-def another_viewer(request):
-    return render(request, 'another_viewer.html')
+def viewer_up(request):
+    return render(request, 'viewer_up.html')

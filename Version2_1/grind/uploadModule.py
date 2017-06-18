@@ -48,7 +48,7 @@ def toUpload(request):
                     stringPoints =  StringIO()
                     w = csv.writer(stringPoints) 
                     data = []
-                    conn = psycopg2.connect(host='localhost', port='5432', dbname='grind', user='postgres', password=)#your own pw
+                    conn = psycopg2.connect(host='localhost', port='5431', dbname='grind', user='postgres', password='950206')
                     cur = conn.cursor()
                     pointExist = Point_Cloud.objects.all()[:1]
                     if pointExist:
