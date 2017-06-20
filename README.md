@@ -42,7 +42,7 @@ https://github.com/mrdoob/three.js/
 
 - Install Django
 - Open Version2_2/Version2_2/settings.py and configure the name and password of the database
-- Open uploadModule and do the same configuration in line 54
+- Open uploadModule and do the same configuration in line 52
 - In command line, change directory to Version2_2 (the first folder, with manage.py in it), run the following:<br>
 $ python manage.py migrate<br>
 $ python manage.py runserver
