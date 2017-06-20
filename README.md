@@ -47,3 +47,6 @@ https://github.com/mrdoob/three.js/
 $ python manage.py migrate<br>
 $ python manage.py runserver
 - Go to browser, localhost:8000/grind
+- Feel free to make changes, but if the models.py is changed, please remember to run the following command lines:<br>
+$ python manage.py makemigrations<br>
+$ python manage.py migrate
