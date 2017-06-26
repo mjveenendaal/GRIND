@@ -56,4 +56,12 @@ $ python manage.py runserver
 - Feel free to make changes, but if the models.py is changed, please remember to run the following command lines:<br>
 $ python manage.py makemigrations<br>
 $ python manage.py migrate
-- The random importance array can be replaced by importance.py and ptred.py, which are both in grind folder
+- The random importance array can be replaced by importance.py and ptred.py, which are both in *grind* folder
+
+## Data model
+
+## Importance value
+
+## Histograms
+
+## Visualisation
