@@ -38,6 +38,12 @@ https://github.com/ivodeliefde/ProjectPointless
 - three.js<br>
 https://github.com/mrdoob/three.js/
 
+## Introduction
+
+The aim of this project is to provide methods to realise the OpenPointcloudMap proposed by Fugro and TU Delft. This idea entails a platform to which anyone could contribute by uploading any point cloud data set, much like OpenStreetMap is for 2D vector maps.
+
+The process of enabling contributors to upload data, integrating these data sets, visualising and redistributing, involves many challenges. Among them, our group focuses on handling different scales and granularity of point clouds from different scanners and environments. Solving this challenge will enable appealing visualisation, usability for low and high computation powers and geometrical consistency for analysis. These are the aspects we think are needed to create a platform that will be engaging for a community of users and contributors.
+
 ## Start using
 
 - Install Django, psycopg2 and laspy
