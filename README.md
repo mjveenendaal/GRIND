@@ -29,6 +29,9 @@ https://github.com/laspy/laspy
 - Scipy (spatial)<br>
 https://github.com/scipy/scipy/tree/master/scipy/spatial
 
+- Bulk insert experiment<br>
+https://github.com/stefano/bulk_insert_experiment
+
 - ThreeGeoJSON<br>
 https://github.com/jdomingu/ThreeGeoJSON
 
