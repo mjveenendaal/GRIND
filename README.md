@@ -60,11 +60,3 @@ $ python manage.py runserver
 $ python manage.py makemigrations<br>
 $ python manage.py migrate
 - The random importance array can be replaced by importance.py and ptred.py, which are both in *grind* folder
-
-## Data model
-
-## Importance value
-
-## Histograms
-
-## Visualisation
